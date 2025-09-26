@@ -1,4 +1,4 @@
-package com.devspacecinenow.ui.theme
+package com.devspacecinenow.presentation.theme
 
 import android.app.Activity
 import android.os.Build

@@ -1,4 +1,4 @@
-package com.devspacecinenow.ui.theme
+package com.devspacecinenow.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
