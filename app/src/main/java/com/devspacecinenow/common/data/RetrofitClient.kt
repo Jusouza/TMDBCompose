@@ -1,4 +1,4 @@
-package com.devspacecinenow.data.api
+package com.devspacecinenow.common.data
 
 import com.devspacecinenow.BuildConfig
 import okhttp3.OkHttpClient
