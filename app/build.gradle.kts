@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("plugin.serialization") version "2.0.0"
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -79,6 +80,12 @@ dependencies {
 
     implementation(libs.serialization.json)
     implementation(libs.coil.compose)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.compiler)
+    implementation(libs.room.ktx)
+    implementation(libs.room.guava)
+    kapt(libs.room.compiler)
 
     testImplementation(libs.junit4)
     androidTestImplementation(libs.bundles.testing)
