@@ -19,7 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +32,8 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.devspacecinenow.R
 import com.devspacecinenow.common.model.MovieDto
+import com.devspacecinenow.detail.presentation.ui.MovieListUiData
+import com.devspacecinenow.detail.presentation.ui.MovieListUiState
 import com.devspacecinenow.list.presentation.MovieListViewModel
 
 
@@ -57,11 +61,11 @@ fun MovieListScreen(
 
 @Composable
 private fun MovieListContent(
-    topRatedMovies: List<MovieDto>,
-    nowPlayingMovies: List<MovieDto>,
-    upcomingMovies: List<MovieDto>,
-    popularMovies: List<MovieDto>,
-    onClick: (MovieDto) -> Unit
+    topRatedMovies: MovieListUiState,
+    nowPlayingMovies: MovieListUiState,
+    upcomingMovies: MovieListUiState,
+    popularMovies: MovieListUiState,
+    onClick: (MovieListUiData) -> Unit
 ) {
 
     Column (
@@ -78,22 +82,22 @@ private fun MovieListContent(
 
         MovieSession(
             label = stringResource(R.string.top_rated_movies_title),
-            movieList = topRatedMovies,
+            movieListUiState = topRatedMovies,
             onClick = onClick
         )
         MovieSession(
             label = stringResource(R.string.now_playing_movies_title),
-            movieList = nowPlayingMovies,
+            movieListUiState = nowPlayingMovies,
             onClick = onClick
         )
         MovieSession(
             label = stringResource(R.string.upcoming_movies_title),
-            movieList = upcomingMovies,
+            movieListUiState = upcomingMovies,
             onClick = onClick
         )
         MovieSession(
             label = stringResource(R.string.popular_movies_title),
-            movieList = popularMovies,
+            movieListUiState = popularMovies,
             onClick = onClick
         )
     }
@@ -102,8 +106,8 @@ private fun MovieListContent(
 @Composable
 private fun MovieSession(
     label: String,
-    movieList: List<MovieDto>,
-    onClick: (MovieDto) -> Unit
+    movieListUiState: MovieListUiState,
+    onClick: (MovieListUiData) -> Unit
 ){
     Column (
         modifier = Modifier
@@ -116,14 +120,25 @@ private fun MovieSession(
             fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.size(8.dp))
-        MovieList(movieList = movieList, onClick = onClick)
+        if (movieListUiState.isLoading){
+
+        } else if(movieListUiState.isError){
+            Text(
+                color = Color.Red,
+                fontSize = 12.sp,
+                text = movieListUiState.errorMessage ?: "",
+                fontWeight = FontWeight.SemiBold
+            )
+        }else {
+            MovieList(movieList = movieListUiState.list, onClick = onClick)
+        }
     }
 }
 
 @Composable
 private fun MovieList(
-    movieList: List<MovieDto>,
-    onClick: (MovieDto) -> Unit
+    movieList: List<MovieListUiData>,
+    onClick: (MovieListUiData) -> Unit
 ) {
     LazyRow {
         items(movieList) {
@@ -137,8 +152,8 @@ private fun MovieList(
 
 @Composable
 private fun MovieItem(
-    movieDto: MovieDto,
-    onClick: (MovieDto) -> Unit
+    movieDto: MovieListUiData,
+    onClick: (MovieListUiData) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -153,7 +168,7 @@ private fun MovieItem(
                 .width(120.dp)
                 .height(150.dp),
             contentScale = ContentScale.Crop,
-            model = movieDto.posterFullPath,
+            model = movieDto.image,
             contentDescription = "${movieDto.title} Poster image",
             placeholder = painterResource(R.drawable.ic_place_holder),
             error = painterResource(R.drawable.ic_place_holder)
