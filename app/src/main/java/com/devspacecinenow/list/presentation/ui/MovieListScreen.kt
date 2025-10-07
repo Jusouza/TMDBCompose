@@ -21,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,7 +30,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.devspacecinenow.R
-import com.devspacecinenow.common.model.MovieDto
 import com.devspacecinenow.detail.presentation.ui.MovieListUiData
 import com.devspacecinenow.detail.presentation.ui.MovieListUiState
 import com.devspacecinenow.list.presentation.MovieListViewModel

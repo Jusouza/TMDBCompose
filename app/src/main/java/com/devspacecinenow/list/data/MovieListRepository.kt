@@ -1,63 +1,97 @@
 package com.devspacecinenow.list.data
 
-import android.accounts.NetworkErrorException
-import com.devspacecinenow.common.model.MovieResponse
+import com.devspacecinenow.common.data.model.Movie
+import com.devspacecinenow.list.data.local.MovieListLocalDataSource
+import com.devspacecinenow.list.data.remote.MovieListRemoteDataSource
 
 class MovieListRepository(
-    private val listService: ListService
+    private val localDS: MovieListLocalDataSource,
+    private val remoteDS: MovieListRemoteDataSource
 ) {
 
-    suspend fun getNowPlaying(): Result<MovieResponse?> {
+    suspend fun getNowPlaying(): Result<List<Movie>?> {
         return try {
-            val response = listService.getNowPlayingMovies()
-            if (response.isSuccessful) {
-                Result.success(response.body())
+            val result = remoteDS.getNowPlaying()
+            if (result.isSuccess){
+            val moviesRemote = result.getOrNull() ?: emptyList()
+                if(moviesRemote.isNotEmpty()){
+                    localDS.updateLocalItems(moviesRemote)
+                }
             } else {
-                Result.failure(NetworkErrorException(response.message()))
-              }
-        } catch (ex: Exception) {
+                val localData = localDS.getNowPlayingMovies()
+                if(localData.isEmpty()){
+                    return@getNowPlaying result
+                }
+            }
+            Result.success(localDS.getNowPlayingMovies())
+
+        } catch (ex: Exception){
             ex.printStackTrace()
             Result.failure(ex)
         }
     }
 
-    suspend fun getTopRated(): Result<MovieResponse?> {
+    suspend fun getTopRated(): Result<List<Movie>?> {
         return try {
-            val response = listService.getTopRatedMovies()
-            if (response.isSuccessful) {
-                Result.success(response.body())
+            val result = remoteDS.getTopRated()
+            if (result.isSuccess){
+                val moviesRemote = result.getOrNull() ?: emptyList()
+                if(moviesRemote.isNotEmpty()){
+                    localDS.updateLocalItems(moviesRemote)
+                }
             } else {
-                Result.failure(NetworkErrorException(response.message()))
+                val localData = localDS.getTopRatedMovies()
+                if(localData.isEmpty()){
+                    return@getTopRated result
+                }
             }
-        } catch (ex: Exception) {
+            Result.success(localDS.getTopRatedMovies())
+
+        } catch (ex: Exception){
             ex.printStackTrace()
             Result.failure(ex)
         }
     }
 
-    suspend fun getUpcoming(): Result<MovieResponse?> {
+    suspend fun getUpcoming(): Result<List<Movie>?> {
         return try {
-            val response = listService.getUpcomingMovies()
-            if (response.isSuccessful) {
-                Result.success(response.body())
+            val result = remoteDS.getUpcoming()
+            if (result.isSuccess){
+                val moviesRemote = result.getOrNull() ?: emptyList()
+                if(moviesRemote.isNotEmpty()){
+                    localDS.updateLocalItems(moviesRemote)
+                }
             } else {
-                Result.failure(NetworkErrorException(response.message()))
+                val localData = localDS.getUpcomingMovies()
+                if(localData.isEmpty()){
+                    return@getUpcoming result
+                }
             }
-        } catch (ex: Exception) {
+            Result.success(localDS.getUpcomingMovies())
+
+        } catch (ex: Exception){
             ex.printStackTrace()
             Result.failure(ex)
         }
     }
 
-    suspend fun getPopular(): Result<MovieResponse?> {
+    suspend fun getPopular(): Result<List<Movie>?> {
         return try {
-            val response = listService.getPopularMovies()
-            if (response.isSuccessful) {
-                Result.success(response.body())
+            val result = remoteDS.getPopular()
+            if (result.isSuccess){
+                val moviesRemote = result.getOrNull() ?: emptyList()
+                if(moviesRemote.isNotEmpty()){
+                    localDS.updateLocalItems(moviesRemote)
+                }
             } else {
-                Result.failure(NetworkErrorException(response.message()))
+                val localData = localDS.getPopularMovies()
+                if(localData.isEmpty()){
+                    return@getPopular result
+                }
             }
-        } catch (ex: Exception) {
+            Result.success(localDS.getPopularMovies())
+
+        } catch (ex: Exception){
             ex.printStackTrace()
             Result.failure(ex)
         }
