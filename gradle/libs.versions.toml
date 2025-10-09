@@ -1,6 +1,7 @@
 [versions]
 core-ktx = "1.13.1"
 lifecycle-runtime = "2.8.2"
+lifecycle-viewmodel-compose = "2.8.3"
 activity-compose = "1.9.0"
 compose-bom = "2023.08.00"
 navigation-compose = "2.7.7"
@@ -9,14 +10,23 @@ okhttp = "4.12.0"
 okhttp-logging = "4.9.1"
 serialization = "1.6.3"
 coil = "2.6.0"
+room = "2.6.1"
+hilt = "2.48"
+hilt-navigation-compose = "1.2.0"
+coroutines-test = "1.8.0"
+mockito-core = "5.7.0"
+mockito-kotlin = "5.3.1"
+mockito-kotlin2 = "2.2.0"
+turbine = "1.1.0"
 junit4 = "4.13.2"
 androidx-junit = "1.1.5"
 espresso = "3.5.1"
-room = "2.6.1"
 
 [libraries]
+# Core
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime" }
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-viewmodel-compose" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 
@@ -27,7 +37,7 @@ compose-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 
-#Room
+# Room
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
@@ -45,7 +55,17 @@ serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-jso
 # Image loading
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
-# Test
+# Dependency Injection (Hilt)
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
+
+# Testing
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito-core" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
+mockito-kotlin2 = { module = "com.nhaarman.mockitokotlin2:mockito-kotlin", version.ref = "mockito-kotlin2" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 junit4 = { module = "junit:junit", version.ref = "junit4" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
 espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
@@ -58,5 +78,15 @@ compose-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 [bundles]
 compose = ["compose-ui", "compose-graphics", "compose-tooling-preview", "compose-material3"]
 retrofit = ["retrofit", "retrofit-gson", "okhttp", "okhttp-logging"]
-testing = ["junit4", "androidx-junit", "espresso", "compose-test-junit4"]
+testing = [
+    "junit4",
+    "androidx-junit",
+    "espresso",
+    "coroutines-test",
+    "mockito-core",
+    "mockito-kotlin",
+    "mockito-kotlin2",
+    "turbine",
+    "compose-test-junit4"
+]
 debug = ["compose-tooling", "compose-test-manifest"]

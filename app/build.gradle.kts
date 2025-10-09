@@ -5,13 +5,16 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("plugin.serialization") version "2.0.0"
     id("org.jetbrains.kotlin.kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
     namespace = "com.devspacecinenow"
     compileSdk = 34
 
-    android.buildFeatures.buildConfig = true
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         applicationId = "com.devspacecinenow"
@@ -67,27 +70,35 @@ android {
     }
 }
 
-dependencies {
+kapt {
+    correctErrorTypes = true
+}
 
+dependencies {
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime)
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.navigation.compose)
-
     implementation(libs.bundles.compose)
-    implementation(libs.bundles.retrofit)
 
+    implementation(libs.bundles.retrofit)
     implementation(libs.serialization.json)
     implementation(libs.coil.compose)
 
     implementation(libs.room.runtime)
-    implementation(libs.room.compiler)
     implementation(libs.room.ktx)
     implementation(libs.room.guava)
     kapt(libs.room.compiler)
 
-    testImplementation(libs.junit4)
-    androidTestImplementation(libs.bundles.testing)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+    kapt(libs.hilt.compiler)
+
+    testImplementation(libs.bundles.testing)
     debugImplementation(libs.bundles.debug)
+
+    configurations.all {
+        exclude(group = "com.intellij", module = "annotations")
+    }
 }
